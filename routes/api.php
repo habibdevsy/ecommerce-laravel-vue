@@ -4,8 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoryController;
-use App\Models\User;
-use App\Models\Category;
+use App\Http\Controllers\BrandController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +36,7 @@ Route::group([
       'middleware' => ['auth:api', 'scope:admin']
     ], function() {
         Route::resource('category', CategoryController::class);
+        Route::resource('brand', BrandController::class);
     });
 });
 
@@ -48,5 +48,7 @@ Route::group([
     ], function() {
         Route::get('categories', [CategoryController::class, 'index']);
         Route::get('category/{id}', [CategoryController::class, 'show']);
+        Route::get('brands', [BrandController::class, 'index']);
+        Route::get('brand/{id}', [BrandController::class, 'show']);
     });
 });

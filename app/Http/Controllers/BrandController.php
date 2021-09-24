@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\Brand;
 
-class CategoryController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return response()->json(['data' => $categories], 201);
+        $brands = Brand::all();
+        return response()->json(['data' => $brands], 201);
     }
 
     /**
@@ -30,15 +30,15 @@ class CategoryController extends Controller
             'name' => 'required',
             'imageUrl' => 'required',
         ]);
-        $category = Category::create([
+        $brand = Brand::create([
             'name' => $request->name,
             'imageUrl' => $request->imageUrl
         ]);
-        $success = $category->save();
+        $success = $brand->save();
         if(!$success) {
-            return response()->json(['success' => $success], 000);
+            return response()->json(['data' => $success], 000);
         }
-        return response()->json(['success' => $success], 201);
+        return response()->json(['data' => $success,'msg'=>'success'], 201);
     }
 
     /**
@@ -49,8 +49,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
-        return response()->json(['data' => $category], 201);
+        $brand = Brand::find($id);
+        return response()->json(['data' => $brand], 201);
     }
 
     /**
@@ -62,11 +62,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
-        $category->name = $request->name;
-        $category->imageUrl = $request->imageUrl;
-        $category->update($request->all());
-        return response()->json(['data'=>$category,'msg'=>'success'],200);
+        $brand = Brand::find($id);
+        $brand->name = $request->name;
+        $brand->imageUrl = $request->imageUrl;
+        $brand->update($request->all());
+        return response()->json(['data'=>$brand,'msg'=>'success'],200);
     }
 
     /**
