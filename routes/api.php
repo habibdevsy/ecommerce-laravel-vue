@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,10 +24,21 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('registerAdmin', [AuthController::class, 'registerAdmin']);
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('logout',  [AuthController::class, 'logout']);
+    });
+    Route::group([
+      'middleware' => ['auth:api', 'scope:admin']
+    ], function() {
         Route::get('user',  [AuthController::class, 'user']);
     });
+    Route::group([
+      'middleware' => ['auth:api', 'scope:user']
+    ], function() {
+        Route::get('test',  [AuthController::class, 'test']);
+    });
+
 });
