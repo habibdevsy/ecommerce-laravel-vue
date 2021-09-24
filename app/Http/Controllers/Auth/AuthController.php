@@ -36,7 +36,7 @@ class AuthController extends Controller
 
     	$success['name'] = $user->name;
     	$success['token'] = $user->createToken('MyApp')->accessToken;
-    	return response()->json(['success' => $success], 200);
+    	return response()->json(['success' => $success], 201);
     }
 
     public function registerAdmin(Request $request)
