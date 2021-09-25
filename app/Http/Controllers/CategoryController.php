@@ -36,9 +36,9 @@ class CategoryController extends Controller
         ]);
         $success = $category->save();
         if(!$success) {
-            return response()->json(['success' => $success], 000);
+            return response()->json(['data' => $success], 000);
         }
-        return response()->json(['success' => $success], 201);
+        return response()->json(['data' => $success], 201);
     }
 
     /**

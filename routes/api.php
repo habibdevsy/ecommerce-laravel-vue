@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,8 +38,12 @@ Route::group([
     ], function() {
         Route::resource('category', CategoryController::class);
         Route::resource('brand', BrandController::class);
+        Route::resource('product', ProductController::class);
+        Route::get('productsOfCategory/{category_id}', [ProductController::class, 'productsOfCategory']);
+        Route::get('productsBest', [ProductController::class, 'productsBest']);
     });
 });
+
 
 Route::group([
     'prefix' => 'user'
@@ -46,9 +51,29 @@ Route::group([
     Route::group([
       'middleware' => ['auth:api', 'scope:user']
     ], function() {
-        Route::get('categories', [CategoryController::class, 'index']);
-        Route::get('category/{id}', [CategoryController::class, 'show']);
-        Route::get('brands', [BrandController::class, 'index']);
-        Route::get('brand/{id}', [BrandController::class, 'show']);
-    });
+
+        Route::group([
+            'prefix' => 'product'
+          ], function() {
+            Route::get('product/{id}', [ProductController::class, 'show']);
+            Route::get('productsOfCategory/{category_id}', [ProductController::class, 'productsOfCategory']);
+            Route::get('productsOfBrand/{brand_id}', [ProductController::class, 'productsOfBrand']);
+            Route::get('productsBest', [ProductController::class, 'productsBest']);
+              });
+
+        Route::group([
+            'prefix' => 'category'
+          ], function() {
+            Route::get('categories', [CategoryController::class, 'index']);
+            Route::get('category/{id}', [CategoryController::class, 'show']);
+              });
+
+        Route::group([
+            'prefix' => 'brand'
+          ], function() {
+            Route::get('brands', [BrandController::class, 'index']);
+            Route::get('brand/{id}', [BrandController::class, 'show']);
+              });
+
+        });
 });
