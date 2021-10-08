@@ -79,4 +79,16 @@ class CategoryController extends Controller
     {
         //
     }
+
+    /**
+     * Show products for a specific category
+     *
+     * @param  int  $category_id
+     * @return \Illuminate\Http\Response
+     */
+    public function categoriesWithProducts()
+    {
+       $categories = Category::select('id','name')->with('products:*')->get();
+        return response()->json(['data' => $categories], 200);
+    }
 }

@@ -96,11 +96,11 @@ class ProductController extends Controller
     public function productsOfCategory( $category_id)
     {
         //without category name
-        // $products  = Product::select()
-        //                 ->where('category_id','=',$category_id)
-        //                 ->get();
+        $products  = Product::select()
+                        ->where('category_id','=',$category_id)
+                        ->get();
         // with category name
-       $products = Category::select('id','name')->with('products:*')->find($category_id);
+    //    $products = Category::select('id','name')->with('products:*')->find($category_id);
         return response()->json(['data' => $products], 200);
     }
 
@@ -113,25 +113,28 @@ class ProductController extends Controller
     public function productsOfBrand( $brand_id)
     {
         //without brand name
-        // $products  = Product::select()
-        //                 ->where('brand_id','=',$brand_id)
-        //                 ->get();
+        $products  = Product::select()
+                        ->where('brand_id','=',$brand_id)
+                        ->paginate(1);
+                        // ->get();
         // with brand name
-       $products = Brand::select('id','name')->with('products:*')->find($brand_id);
-        return response()->json(['data' => $products], 200);
+    //    $products = Brand::select('id','name')->with('products:*')->find($brand_id);
+        return response()->json(['data' => $products,'status_code'=>200], 200);
     }
 
     /**
      * Show products best
      *
-     * @param  int  $category_id
      * @return \Illuminate\Http\Response
      */
     public function productsBest()
     {
         $products  = Product::select()
+
                         ->where('isBest','=',1)
+                        // ->paginate(10);
                         ->get();
         return response()->json(['data' => $products], 200);
     }
+
 }

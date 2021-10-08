@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Models\Product;
 
 class BrandController extends Controller
 {
@@ -14,8 +15,13 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::all();
+        // $brands = Brand::all();
+        // return response()->json(['data' => $brands], 201);
+
+        $brands = Brand::select('id','name','imageUrl')->with('products:*')
+        ->get();
         return response()->json(['data' => $brands], 201);
+
     }
 
     /**
@@ -78,5 +84,16 @@ class BrandController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Show products for a specific category
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function brandsWithProducts()
+    {
+       $brands = Brand::select('id','name')->with('products:*')->get();
+        return response()->json(['data' => $brands], 200);
     }
 }

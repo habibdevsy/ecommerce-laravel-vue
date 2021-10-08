@@ -44,20 +44,16 @@ Route::group([
     });
 });
 
-
 Route::group([
     'prefix' => 'user'
-], function () {
-    Route::group([
-      'middleware' => ['auth:api', 'scope:user']
-    ], function() {
+],function() {
 
         Route::group([
             'prefix' => 'product'
           ], function() {
             Route::get('product/{id}', [ProductController::class, 'show']);
-            Route::get('productsOfCategory/{category_id}', [ProductController::class, 'productsOfCategory']);
-            Route::get('productsOfBrand/{brand_id}', [ProductController::class, 'productsOfBrand']);
+            Route::get('productsByCategory/{category_id}', [ProductController::class, 'productsOfCategory']);
+            Route::get('productsByBrand/{brand_id}', [ProductController::class, 'productsOfBrand']);
             Route::get('productsBest', [ProductController::class, 'productsBest']);
               });
 
@@ -66,6 +62,7 @@ Route::group([
           ], function() {
             Route::get('categories', [CategoryController::class, 'index']);
             Route::get('category/{id}', [CategoryController::class, 'show']);
+            Route::get('categoriesWithProducts', [CategoryController::class, 'categoriesWithProducts']);
               });
 
         Route::group([
@@ -73,7 +70,12 @@ Route::group([
           ], function() {
             Route::get('brands', [BrandController::class, 'index']);
             Route::get('brand/{id}', [BrandController::class, 'show']);
+            Route::get('brandsWithProducts', [BrandController::class, 'brandsWithProducts']);
               });
 
         });
-});
+// for routes pay use ->middleware(['auth:api', 'scope:user'])
+//for test with ionic without login
+// Route::get('productsOfCategory/{category_id}', [ProductController::class, 'productsOfCategory']);
+// Route::get('productsBest', [ProductController::class, 'productsBest']);
+// Route::get('categories', [CategoryController::class, 'index'])->middleware(['auth:api', 'scope:user']);
